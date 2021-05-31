@@ -20,4 +20,8 @@ public class HelloServiceTest {
         assertEquals("Hello JUnit 5", helloService.get());
     }
 
+    @Test
+    void failingTest(){
+        assertEquals(4,3);
+    }
 }

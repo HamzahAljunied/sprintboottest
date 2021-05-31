@@ -37,3 +37,13 @@ publishing {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+
+test {
+    useJUnitPlatform()
+    afterTest {desc, result ->
+        logger.quiet "Executing ${desc.name}, result: ${result.resultType}"
+    }
+    testLogging{
+        exceptionFormat = 'full'
+    }
+}
