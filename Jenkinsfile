@@ -5,6 +5,7 @@ pipeline{
         stage("build"){
             steps{
                 echo 'building application'
+                sh ' chmod +x ./gradlew'
                 sh './gradlew build'
             }
         }
@@ -12,6 +13,7 @@ pipeline{
         stage("test"){
             steps{
                 echo 'Running tests'
+                sh ' chmod +x ./gradlew'
                 sh './gradlew test'
             }
         }
