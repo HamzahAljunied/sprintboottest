@@ -19,7 +19,7 @@ pipeline{
         }
 
         stage("Build & Push to artifactory"){
-            step{
+            steps{
                 container('springtest'){
                     withCredentials([usernamePassword(credentialsId: 'artifact-jenkin', usenameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
                         sh '''
