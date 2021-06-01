@@ -20,6 +20,8 @@ pipeline{
 
         stage("Build & Push to artifactory"){
             steps{
+                echo 'building image'
+                sh './gradlew jib'
                 container('springtest'){
                     withCredentials([usernamePassword(credentialsId: 'artifact-jenkin', usenameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
                         sh '''
