@@ -17,6 +17,20 @@ pipeline{
                 sh './gradlew test'
             }
         }
+
+        stage("Build & Push to artifactory"){
+            step{
+                container('springtest'){
+                    withCredentials([usernamePassword(credentialsId: 'artifact-jenkin', usenameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
+                        sh '''
+                            export ARTIFACTORY_USERNAME=$USERNAME
+                            export ARTIFACTORY_PASSWORD=$PASSWORD
+                            ./gradlew jib
+                        '''
+                    }
+                }
+            }
+        }
     }
 
     post{

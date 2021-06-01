@@ -5,7 +5,10 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'com.google.cloud.tools.jib' version '3.0.0'
 }
+
+jib.to.image = 'https://devhamzah.jfrog.io/artifactory/default-docker-remote/'
 
 repositories {
     mavenLocal()
