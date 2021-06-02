@@ -8,7 +8,7 @@ plugins {
     id 'com.google.cloud.tools.jib' version '3.0.0'
 }
 
-jib.to.image = 'https://devhamzah.jfrog.io/docker-local'
+jib.to.image = 'devhamzah.jfrog.io/springtest/springtest'
 
 repositories {
     mavenLocal()
