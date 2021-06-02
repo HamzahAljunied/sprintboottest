@@ -8,7 +8,7 @@ plugins {
     id 'com.google.cloud.tools.jib' version '3.0.0'
 }
 
-jib.to.image = 'devhamzah.jfrog.io/springtest/springtest'
+jib.to.image = 'devhamzah.jfrog.io/springtest/springtest123'
 
 repositories {
     mavenLocal()
