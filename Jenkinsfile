@@ -1,6 +1,10 @@
 pipeline{
     agent any
 
+    environment{
+        jFrogCredential = credentials('jfrog-jenkins')
+    }
+
     stages{
         stage("build"){
             steps{
@@ -21,16 +25,11 @@ pipeline{
         stage("Build & Push to artifactory"){
             steps{
                 echo 'building image'
-                sh './gradlew jib'
-                container('springtest'){
-                    withCredentials([usernamePassword(credentialsId: 'artifact-jenkin', usenameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
-                        sh '''
-                            export ARTIFACTORY_USERNAME=$USERNAME
-                            export ARTIFACTORY_PASSWORD=$PASSWORD
-                            ./gradlew jib
-                        '''
-                    }
-                }
+                sh 'chmod +x ./gradlew'
+                sh './gradlew jib \
+                    -Djib.to.tags=${BUILD_TIMESTAMP} \
+                    -Djib.to.auth.username=$jFrogCredential_USR \
+                    -Djib.to.auth.password=$jFrogCredential_PSW'
             }
         }
     }
