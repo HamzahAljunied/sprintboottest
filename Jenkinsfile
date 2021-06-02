@@ -25,11 +25,13 @@ pipeline{
         stage("Build & Push to artifactory"){
             steps{
                 echo 'building image'
-                sh 'chmod +x ./gradlew'
-                sh './gradlew jib \
-                    -Djib.to.tags=latest \
-                    -Djib.to.auth.username=$jFrogCredential_USR \
-                    -Djib.to.auth.password=$jFrogCredential_PSW'
+                withCredentials([usernamePassword(credentialsId: 'jfrog-jenkins', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
+                    sh 'chmod +x ./gradlew'
+                    sh './gradlew jib \
+                        -Djib.to.tags=latest \
+                        -Djib.to.auth.username=$USERNAME \
+                        -Djib.to.auth.password=$PASSWORD'
+                }
             }
         }
     }
