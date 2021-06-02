@@ -27,7 +27,7 @@ pipeline{
                 echo 'building image'
                 sh 'chmod +x ./gradlew'
                 sh './gradlew jib \
-                    -Djib.to.tags=${BUILD_TIMESTAMP} \
+                    -Djib.to.tags=latest \
                     -Djib.to.auth.username=$jFrogCredential_USR \
                     -Djib.to.auth.password=$jFrogCredential_PSW'
             }
