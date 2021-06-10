@@ -75,7 +75,7 @@ pipeline{
                     rtDockerPush(
                         serverId: "jfrog-artifactory",
                         image: "devhamzah-docker.jfrog.io/springtest/springtest",
-                        targetRepo: "default-docker-local"
+                        targetRepo: "default-docker-local",
                         buildName: "springtest",
                         buildNumber: "${BUILD_TAG}"
                     )
