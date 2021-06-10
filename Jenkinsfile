@@ -1,12 +1,16 @@
 pipeline{
     agent any
 
+    environment{
+        BUILD_TAG = "${BUILD_TIMESTAMP}"
+    }
+
     stages{
         stage("build"){
             steps{
                 echo 'building application'
                 sh ' chmod +x ./gradlew'
-                sh './gradlew build'
+                sh './gradlew build'                
             }
         }
 
@@ -14,23 +18,53 @@ pipeline{
             steps{
                 echo 'Running tests'
                 sh ' chmod +x ./gradlew'
-                sh './gradlew test'
+                sh './gradlew test'                
             }
         }
 
         stage("Build & Push to artifactory"){
             steps{
                 echo 'building image'
-                sh './gradlew jib'
-                container('springtest'){
-                    withCredentials([usernamePassword(credentialsId: 'artifact-jenkin', usenameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
-                        sh '''
-                            export ARTIFACTORY_USERNAME=$USERNAME
-                            export ARTIFACTORY_PASSWORD=$PASSWORD
-                            ./gradlew jib
-                        '''
-                    }
-                }
+                withCredentials([usernamePassword(credentialsId: 'artifact-jenkin', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
+                    sh '''
+                        docker load
+                        docker image ls -a
+                        ./gradlew jibDockerBuild \
+                            -Djib.to.image="devhamzah-docker.jfrog.io/springtest/springtest" \
+                            -Djib.to.tags="${BUILD_TAG}" \
+                            -Djib.to.auth.username=$USERNAME \
+                            -Djib.to.auth.password=$PASSWORD
+                    '''
+                }                
+            }
+        }
+
+        stage("push and publish to artifactory"){
+            steps{
+                rtDockerPush(
+                    serverId: "jfrog-artifactory",
+                    image: "devhamzah-docker.jfrog.io/springtest/springtest",
+                    targetRepo: "default-docker-local",
+                    buildName: "springtest",
+                    buildNumber: "${BUILD_TAG}"
+                )
+
+                rtPublishInfo(
+                    serverId: "jfrog-artifactory",
+                    buildName: "springtest",
+                    buildNumber: "${BUILD_TAG}"
+                )                
+            }
+        }
+
+        stage("xray scan"){
+            steps{
+                xrayScan(
+                    serverId: "jfrog-artifactory",
+                    buildName: "springtest",
+                    buildNumber: "${BUILD_TAG}",
+                    failBuild: true
+                )                
             }
         }
     }
