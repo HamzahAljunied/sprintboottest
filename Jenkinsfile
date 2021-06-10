@@ -27,8 +27,6 @@ pipeline{
                 echo 'building image'
                 withCredentials([usernamePassword(credentialsId: 'artifact-jenkin', usenameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
                     sh '''
-                        export ARTIFACTORY_USERNAME=$USERNAME
-                        export ARTIFACTORY_PASSWORD=$PASSWORD
                         ./gradlew jibDockerBuild \
                             -Djib.to.image="devhamzah-docker.jfrog.io/springtest/springtest \
                             -Djib.to.tags="${BUILD_TAG}" \
