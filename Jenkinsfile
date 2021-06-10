@@ -25,7 +25,7 @@ pipeline{
         stage("Build & Push to artifactory"){
             steps{
                 echo 'building image'
-                withCredentials([usernamePassword(credentialsId: 'artifact-hamzah-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
+                withCredentials([usernamePassword(credentialsId: 'jfrog-hamzah-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
                     sh '''
                         docker load
                         docker image ls -a
