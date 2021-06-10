@@ -25,18 +25,17 @@ pipeline{
         stage("Build & Push to artifactory"){
             steps{
                 echo 'building image'
-                sh './gradlew jib'
-                    withCredentials([usernamePassword(credentialsId: 'artifact-jenkin', usenameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
-                        sh '''
-                            export ARTIFACTORY_USERNAME=$USERNAME
-                            export ARTIFACTORY_PASSWORD=$PASSWORD
-                            ./gradlew jibDockerBuild \
-                                -Djib.to.image="devhamzah-docker.jfrog.io/springtest/springtest \
-                                -Djib.to.tags="${BUILD_TAG}" \
-                                -Djib.to.auth.username=$USERNAME \
-                                -Djib.to.auth.password=$PASSWORD
-                        '''
-                    }                
+                withCredentials([usernamePassword(credentialsId: 'artifact-jenkin', usenameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
+                    sh '''
+                        export ARTIFACTORY_USERNAME=$USERNAME
+                        export ARTIFACTORY_PASSWORD=$PASSWORD
+                        ./gradlew jibDockerBuild \
+                            -Djib.to.image="devhamzah-docker.jfrog.io/springtest/springtest \
+                            -Djib.to.tags="${BUILD_TAG}" \
+                            -Djib.to.auth.username=$USERNAME \
+                            -Djib.to.auth.password=$PASSWORD
+                    '''
+                }                
             }
         }
 
