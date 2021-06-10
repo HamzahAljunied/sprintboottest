@@ -28,7 +28,7 @@ pipeline{
                 withCredentials([usernamePassword(credentialsId: 'artifact-jenkin', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
                     sh '''
                         ./gradlew jibDockerBuild \
-                            -Djib.to.image="devhamzah-docker.jfrog.io/springtest/springtest \
+                            -Djib.to.image="devhamzah-docker.jfrog.io/springtest/springtest" \
                             -Djib.to.tags="${BUILD_TAG}" \
                             -Djib.to.auth.username=$USERNAME \
                             -Djib.to.auth.password=$PASSWORD
@@ -37,7 +37,7 @@ pipeline{
             }
         }
 
-        stage("push and publish to artifacotry"){
+        stage("push and publish to artifactory"){
             steps{
                 rtDockerPush(
                     serverId: "jfrog-artifactory",
