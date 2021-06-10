@@ -27,7 +27,7 @@ pipeline{
                 echo 'building image'
                 withCredentials([usernamePassword(credentialsId: 'artifact-jenkin', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
                     sh '''
-                        sudo docker load
+                        docker load
                         docker image ls -a
                         ./gradlew jibDockerBuild \
                             -Djib.to.image="devhamzah-docker.jfrog.io/springtest/springtest" \
