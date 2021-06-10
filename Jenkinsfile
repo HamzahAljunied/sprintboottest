@@ -25,7 +25,7 @@ pipeline{
         stage("Build & Push to artifactory"){
             steps{
                 echo 'building image'
-                withCredentials([usernamePassword(credentialsId: 'artifact-jenkin', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
+                withCredentials([usernamePassword(credentialsId: 'artifact-hamzah-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
                     sh '''
                         docker load
                         docker image ls -a
@@ -42,7 +42,7 @@ pipeline{
         stage("push and publish to artifactory"){
             steps{
                 rtDockerPush(
-                    serverId: "jfrog-artifactory",
+                    serverId: "jfrog-hamzah",
                     image: "devhamzah-docker.jfrog.io/springtest/springtest",
                     targetRepo: "default-docker-local",
                     buildName: "springtest",
@@ -50,7 +50,7 @@ pipeline{
                 )
 
                 rtPublishInfo(
-                    serverId: "jfrog-artifactory",
+                    serverId: "jfrog-hamzah",
                     buildName: "springtest",
                     buildNumber: "${BUILD_TAG}"
                 )                
