@@ -82,6 +82,9 @@ pipeline{
                         buildName: "springtest",
                         buildNumber: "${BUILD_TAG}"
                     )
+
+                    sh '''docker image rm devhamzah.jfrog.io/default-docker-local/springtest:${BUILD_TAG}'''
+                    sh '''docker image ls -a'''
                 }
             }
         }
@@ -93,8 +96,16 @@ pipeline{
                         serverId: "jfrog-hamzah",
                         buildName: "springtest",
                         buildNumber: "${BUILD_TAG}",
-                        failBuild: true
+                        failBuild: false
                     )
+
+                    rtDownload(
+                        serverId: "jfrog-hamzah",
+                        buildName: "springtest",
+                        buildNumber: "${BUILD_TAG}"
+                    )
+
+                    sh '''docker image ls -a'''
                 }
             }
         }
