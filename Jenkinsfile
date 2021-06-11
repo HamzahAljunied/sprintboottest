@@ -49,14 +49,14 @@ pipeline{
             }
         }
 
-        stage("Build & Push to artifactory"){
+        stage("build image"){
             steps{
                 container('jgc'){
                     echo 'building image'
                     withCredentials([usernamePassword(credentialsId: 'jfrog-hamzah-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
                         sh '''
                             ./gradlew jibDockerBuild \
-                                -Djib.to.image="devhamzah-docker.jfrog.io/springtest/springtest" \
+                                -Djib.to.image="devhamzah-docker.jfrog.io/springtest" \
                                 -Djib.to.tags="${BUILD_TAG}" \
                                 -Djib.to.auth.username=$USERNAME \
                                 -Djib.to.auth.password=$PASSWORD
@@ -71,7 +71,7 @@ pipeline{
                 container('jgc'){
                     rtDockerPush(
                         serverId: "jfrog-hamzah",
-                        image: "devhamzah-docker.jfrog.io/springtest/springtest",
+                        image: "devhamzah-docker.jfrog.io/springtest",
                         targetRepo: "default-docker-local",
                         buildName: "springtest",
                         buildNumber: "${BUILD_TAG}"
