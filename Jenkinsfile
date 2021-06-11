@@ -90,7 +90,7 @@ pipeline{
             steps{
                 container('jgc'){
                     xrayScan(
-                        serverId: "jfrog-artifactory",
+                        serverId: "jfrog-hamzah",
                         buildName: "springtest",
                         buildNumber: "${BUILD_TAG}",
                         failBuild: true
