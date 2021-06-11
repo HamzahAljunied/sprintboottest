@@ -77,7 +77,7 @@ pipeline{
                         buildNumber: "${BUILD_TAG}"
                     )
 
-                    rtPublishInfo(
+                    rtPublishBuildInfo(
                         serverId: "jfrog-hamzah",
                         buildName: "springtest",
                         buildNumber: "${BUILD_TAG}"
