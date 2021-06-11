@@ -1,5 +1,28 @@
 pipeline{
-    agent any
+    agent{
+        kubernetes{
+            yaml"""
+                apiVersion: v1
+                kind: Pod
+                metadata:
+                    labels:
+                        jenkins/label: jenkins-slave
+                spec:
+                    containers:
+                    - name: jgc
+                      image: dsingh107/jenkins-agent:latest
+                      imagePullPolicy: Always
+                      tty: true
+                      volumeMounts:
+                      - name: docker
+                        mountPath: /var/run/docker.sock
+                    volumes:
+                        - name: docker
+                          hostPath:
+                            path: /var/run/docker.sock
+            """
+        }
+    }
 
     environment{
         BUILD_TAG = "${BUILD_TIMESTAMP}"
